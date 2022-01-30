@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "Development Application Council API.\n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->",
+    "description": "05 Online DA Service - ToCouncil.v2.202212\n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->",
     "version": "v2",
-    "title": "DA - ePlanning to Council API"
+    "title": "05 Online DA Service - ToCouncil.v2.202212"
   },
   "tags": [
     {
@@ -93,7 +93,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "ToCouncil.CreateDA"
       }
     },
     "/UpdateDA/{CaseID}": {
@@ -174,7 +175,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "ToCouncil.UpdateDA"
       }
     },
     "/RequestOperationalConsent/{CaseID}": {
@@ -245,7 +247,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "ToCouncil.RequestOperationalConsent"
       }
     }
   },
