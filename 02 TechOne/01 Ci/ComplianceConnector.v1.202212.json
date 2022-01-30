@@ -1,0 +1,542 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0",
+    "title": "Compliance Connector - Inbound"
+  },
+  "servers": [
+    {
+      "url": "https://middleware.com/Webservice/1.0"
+    }
+  ],
+  "paths": {
+    "/Connector": {
+      "post": {
+        "summary": "Create or Update an Application",
+        "operationId": "post-create-update-application",
+        "parameters": [
+          {
+            "name": "extRef",
+            "in": "header",
+            "description": "External Agency unique reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mwRef",
+            "in": "header",
+            "description": "Middleware unique reference - inc. build number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "intRef",
+            "in": "header",
+            "description": "TechnologyOne unique application reference",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "apiKey",
+            "in": "header",
+            "description": "TechnologyOne API client unique key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "text/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "application": {
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "type": "object",
+                        "description": "The primary action being performed (i.e. create an application or update an application).",
+                        "properties": {
+                          "@code": {
+                            "enum": [
+                              "CREATE",
+                              "UPDATE"
+                            ],
+                            "type": "string",
+                            "xml": {
+                              "name": "code",
+                              "attribute": true
+                            }
+                          },
+                          "descr": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "type": {
+                        "type": "object",
+                        "description": "The application type being created, e.g. DA (Development Application).",
+                        "properties": {
+                          "@code": {
+                            "type": "string",
+                            "xml": {
+                              "name": "code",
+                              "attribute": true
+                            }
+                          },
+                          "value": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "attributes": {
+                        "type": "array",
+                        "description": "Miscellaneous data required for the processing of the application. Options are 1. 'array' - an array of data saved as attributes or additional info e.g. political donations; 2. 'field' for custom fields e.g. estimated cost; 3. 'activity' for development activities or types e.g. dwelling; 4. 'affectation' for property attributes e.g. zoning.",
+                        "items": {
+                          "$ref": "#/components/schemas/attribute"
+                        }
+                      },
+                      "events": {
+                        "type": "array",
+                        "description": "Events that trigger updates e.g. Accept or Reject the application, Request for Information, Determination.",
+                        "items": {
+                          "$ref": "#/components/schemas/event"
+                        }
+                      },
+                      "documents": {
+                        "type": "array",
+                        "description": "Documents required to process the application, or created as aresult of the application e.g. application form, plans, consent document.",
+                        "items": {
+                          "$ref": "#/components/schemas/document"
+                        }
+                      },
+                      "locations": {
+                        "type": "array",
+                        "description": "Address, or legal description of the property or land which is the subject of the application.",
+                        "items": {
+                          "$ref": "#/components/schemas/location"
+                        }
+                      },
+                      "people": {
+                        "type": "array",
+                        "description": "Key people e.g. Applicant, Builder, Architect, Licensee, etc.",
+                        "items": {
+                          "$ref": "#/components/schemas/person"
+                        }
+                      }
+                    }
+                  },
+                  "payload": {
+                    "type": "string",
+                    "description": "An alternative version of the payload for use by IPAS partners"
+                  }
+                },
+                "xml": {
+                  "name": "compliance",
+                  "prefix": "",
+                  "namespace": "http://www.w3.org/2001/XMLSchema-instance"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payload Received"
+          },
+          "400": {
+            "description": "Invalid Request"
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "404": {
+            "description": "Application Not Found"
+          },
+          "412": {
+            "description": "Application Already Exists"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "location": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Property or land",
+            "example": "property",
+            "xml": {
+              "name": "type",
+              "attribute": true
+            }
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Address",
+            "example": "50-52 YARTLA STREET MENINDEE 2879"
+          },
+          "legal": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Legal Description",
+            "example": "Lot 17 DP 87969"
+          },
+          "unit": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Unit Number",
+            "example": "5A"
+          },
+          "house": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Street House Number",
+            "example": "50-52"
+          },
+          "street": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Street Name",
+            "example": "Yartla Street"
+          },
+          "locality1": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Suburb",
+            "example": "Menindee"
+          },
+          "locality2": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Postcode",
+            "example": "2879"
+          },
+          "locality3": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "State",
+            "example": "NSW"
+          },
+          "lot": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Lot Number",
+            "example": "7"
+          },
+          "plan": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Plan Numer",
+            "example": "85462"
+          },
+          "plantype": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Plan Type e.g. DP, RP, SP",
+            "example": "SP"
+          }
+        }
+      },
+      "person": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Person type e.g. applicant, builder, engineer, etc",
+            "example": "applicant",
+            "xml": {
+              "name": "type",
+              "attribute": true
+            }
+          },
+          "salutation": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "",
+            "example": ""
+          },
+          "org": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "true if the name is a company",
+            "example": "true"
+          },
+          "first": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "First Name",
+            "example": "Fred"
+          },
+          "last": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Last Name or Company Name",
+            "example": "Bloggs"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Address - Single Line",
+            "example": "10 Smith Street Smithville NSW 2222"
+          },
+          "address1": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Address Line 1",
+            "example": "10 Smith Street"
+          },
+          "address2": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Address Line 2",
+            "example": "Smithville NSW 2221"
+          },
+          "address3": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Address Line 3",
+            "example": "Australia"
+          },
+          "address4": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Formatted Address Line 4",
+            "example": ""
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Email Address",
+            "example": "fred@bloggs.com"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Phone Number",
+            "example": "9268 6542"
+          },
+          "companyNum": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "ABN, ACN or other company number",
+            "example": "50983484711"
+          }
+        }
+      },
+      "document": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Document type e.g. plans, elevations, spec",
+            "example": "plans",
+            "xml": {
+              "name": "type",
+              "attribute": true
+            }
+          },
+          "ref1": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Unique document ID 1",
+            "example": "ABCD"
+          },
+          "ref2": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Unique document ID 2",
+            "example": "1234"
+          },
+          "descr": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Description of the document",
+            "example": "Floor plans"
+          },
+          "mimeType": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Document mime-type",
+            "example": "application/pdf"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Unique URL to download the document",
+            "example": ""
+          },
+          "base64": {
+            "type": "string",
+            "description": "A serialised copy of the document",
+            "example": ""
+          }
+        }
+      },
+      "event": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "A code for the event that triggered the payload",
+            "example": "Accept",
+            "xml": {
+              "name": "type",
+              "attribute": true
+            }
+          },
+          "dateStart": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "The date the event was triggered",
+            "example": "12 Mar 2021"
+          },
+          "dateDue": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "The date the event was due to complete",
+            "example": "12 Mar 2021"
+          },
+          "dateEnd": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "The date the event was completed",
+            "example": "12 Mar 2021"
+          },
+          "descr": {
+            "type": "string",
+            "description": "A description of the event",
+            "example": "Application accepted"
+          },
+          "decision": {
+            "type": "string",
+            "description": "ACCEPT",
+            "example": "A code to be passed to identify the result of the event"
+          }
+        }
+      },
+      "attribute": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "enum": [
+              "array",
+              "field",
+              "activity",
+              "affectation"
+            ],
+            "type": "string",
+            "description": "The type of attribute e.g. custom field",
+            "example": "field",
+            "xml": {
+              "name": "type",
+              "attribute": true
+            }
+          },
+          "@code": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "A unique code to identity a group of data fields",
+            "example": "Hours",
+            "xml": {
+              "name": "code",
+              "attribute": true
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/data"
+            }
+          }
+        }
+      },
+      "data": {
+        "required": [
+          "@code"
+        ],
+        "type": "object",
+        "properties": {
+          "@code": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "A code to identify the field type",
+            "example": "ESTCOST",
+            "xml": {
+              "name": "code",
+              "attribute": true
+            }
+          },
+          "@descr": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "A description of the field",
+            "example": "Estimated Cost of Work",
+            "xml": {
+              "name": "descr",
+              "attribute": true
+            }
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "The value of the custom field",
+            "example": "100000"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "api-key",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Compliance Connector",
+      "externalDocs": {
+        "description": "",
+        "url": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,1974 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Development Application Council API.\n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->",
+    "version": "v2",
+    "title": "DA - ePlanning to Council API"
+  },
+  "tags": [
+    {
+      "name": "Development Application",
+      "externalDocs": {
+        "description": "Find out more about the DA process",
+        "url": "https://www.planning.nsw.gov.au/Assess-and-Regulate/Development-Assessment/Your-guide-to-the-DA-process"
+      }
+    }
+  ],
+  "paths": {
+    "/CreateDA/{CaseID}": {
+      "post": {
+        "summary": "CreateDA",
+        "description": "This operation transfers the development application details entered by the applicant from the Online DA Service to the council's IT system.",
+        "parameters": [
+          {
+            "name": "CaseID",
+            "in": "path",
+            "description": "A fully qualified application number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "OrganisationID",
+            "in": "header",
+            "description": "Used by the API gateway to route the request to the relevant council.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IdempotencyId",
+            "in": "header",
+            "description": "Unique Id for this request. Allows the API to respond in an idempotent way if it has already been called with these parameters and prevents duplicate processing. Typically a UUID such as \"63a9ba30-7a4b-4fac-b343-d1f05cf089f1\"",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DA"
+              }
+            }
+          },
+          "description": "Information request object",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "DA created"
+          },
+          "400": {
+            "description": "Invalid request supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "DA already exists",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Mandatory field values not provided",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateDA/{CaseID}": {
+      "put": {
+        "summary": "UpdateDA",
+        "description": "This operation updates the development application details entered by the applicant from the Online DA Service to the council's IT system.",
+        "parameters": [
+          {
+            "name": "CaseID",
+            "in": "path",
+            "description": "A fully qualified application number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "OrganisationID",
+            "in": "header",
+            "description": "Used by the API gateway to route the request to the relevant council.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IdempotencyId",
+            "in": "header",
+            "description": "Unique Id for this request. Allows the API to respond in an idempotent way if it has already been called with these parameters and prevents duplicate processing. Typically a UUID such as \"63a9ba30-7a4b-4fac-b343-d1f05cf089f1\"",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDA"
+              }
+            }
+          },
+          "description": "Information request object",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "DA created"
+          },
+          "400": {
+            "description": "Invalid request supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "DA already exists",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Mandatory field values not provided",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RequestOperationalConsent/{CaseID}": {
+      "put": {
+        "summary": "RequestOperationalConsent",
+        "description": "This operation transfers additional information uploaded by the applicant (for an existing DA) from the Online DA Service to the council's IT system. This additional information can either be requested by council or provided voluntarily by the applicant.",
+        "parameters": [
+          {
+            "name": "CaseID",
+            "in": "path",
+            "description": "A fully qualified application number.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "OrganisationID",
+            "in": "header",
+            "description": "Used by the API gateway to route the request to the relevant council.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IdempotencyId",
+            "in": "header",
+            "description": "Unique Id for this request. Allows the API to respond in an idempotent way if it has already been called with these parameters and prevents duplicate processing. Typically a UUID such as \"63a9ba30-7a4b-4fac-b343-d1f05cf089f1\"",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OperationalConsent"
+              }
+            }
+          },
+          "description": "Information request object",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operational Consent provided"
+          },
+          "400": {
+            "description": "Invalid request supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DA not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about the DA process",
+    "url": "https://www.planning.nsw.gov.au/Assess-and-Regulate/Development-Assessment/Your-guide-to-the-DA-process"
+  },
+  "servers": [
+    {
+      "url": "https://api-uat.apps1.nsw.gov.au/planning/councils/v2"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api-key",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "DA": {
+        "type": "object",
+        "required": [
+          "caseStatus",
+          "applicant",
+          "developmentSiteOwner",
+          "ownerDetails",
+          "siteAddresses",
+          "developmentTypes",
+          "updatedBy"
+        ],
+        "properties": {
+          "caseStatus": {
+            "type": "string",
+            "description": "Status of the DA case",
+            "maxLength": 80,
+            "example": "Pending Lodgement"
+          },
+          "applicant": {
+            "$ref": "#/components/schemas/Applicant"
+          },
+          "developmentSiteOwner": {
+            "type": "string",
+            "description": "This is to track the development site owner type. One of the below mentioned values must be selected for development site owner type. 1. APPLICANT_OWNED 2. MULTI_PLUS_APPLICANT 3. MULTI_EXCL_APPLICANT 4. COMPANY_OWNED",
+            "example": "Refer to description for values."
+          },
+          "securityConditions": {
+            "type": "boolean",
+            "description": "This is to track whether there are any security or site conditions which may have impact on the person undertaking the inspection."
+          },
+          "detailsOfSecurityConditions": {
+            "type": "string",
+            "description": "This is to track the details of security conditions. Visible only if securityConditions is true."
+          },
+          "developerDetails": {
+            "$ref": "#/components/schemas/developerDetails"
+          },
+          "ownerDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Owner"
+            }
+          },
+          "ownersConsentDeclaration": {
+            "type": "boolean",
+            "description": "This is to track the declaration done by applicant."
+          },
+          "applicationType": {
+            "type": "string",
+            "description": "This is to track the type of the application. One of the below mentioned values must be selected for the type of the application. 1. DA 2. MODIFICATION 3. REVIEW",
+            "example": "Refer to description for values."
+          },
+          "councilDANumber": {
+            "type": "string",
+            "description": "This is to track the unique council DA number. Required if the application has been accepted for lodgement by the council.",
+            "maxLength": 20
+          },
+          "modificationType": {
+            "type": "string",
+            "description": "This is to track the type of modification. Required if the applicationType is \"Modification application\". One of the below mentioned values must be selected for modification type. 1. MOD_MINOR 2. MOD_ENV_IMPACT 3. MOD_LEC 4. MOD_OTHERS",
+            "example": "Refer to description for values."
+          },
+          "originalDADeterminationDate": {
+            "type": "string",
+            "description": "This is to track the date when the original DA was determined."
+          },
+          "existingDANumber": {
+            "type": "string",
+            "description": "This is to track the existing DA number upon which modification or review application is proposed. Required if the applicationType is MODIFICATION or REVIEW.",
+            "maxLength": 20
+          },
+          "existingDADeterminationDate": {
+            "type": "string",
+            "description": "This is to track the existing DA determination date upon which review application is proposed. Required if the applicationType is Review. UI field is \"Date of determination\"."
+          },
+          "proposedModificationDescription": {
+            "type": "string",
+            "description": "This is to track the existing DA determination date upon which modification application is proposed.Required if the applicationType is MODIFICATION.",
+            "maxLength": 1500
+          },
+          "isExistingOnlineDA": {
+            "type": "boolean",
+            "description": "This is to track if the existing DA applied was via the NSW Planning Portal."
+          },
+          "existingOnlinePANNumber": {
+            "type": "string",
+            "description": "This is to track the portal application number (PAN)."
+          },
+          "siteAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            }
+          },
+          "developmentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DevelopmentType"
+            }
+          },
+          "relevantEPI": {
+            "type": "array",
+            "description": "This is to track the relevant environmental planning instrument. eg. LEP, SEPP",
+            "items": {
+              "$ref": "#/components/schemas/RelevantEPIList"
+            }
+          },
+          "isPoolSpa40KlitersProposed": {
+            "type": "boolean",
+            "description": "This is to track if the pool is more than 40K in capacity. This will be applicable when 'Pools / decks / fencing' is a part of 'developmentTypes'."
+          },
+          "developmentDescription": {
+            "type": "string",
+            "maxLength": 1500
+          },
+          "proposed24HrWork": {
+            "$ref": "#/components/schemas/ScheduleWorkDay"
+          },
+          "numDwellingsUnitsProposed": {
+            "type": "integer",
+            "description": "This is to track the number of dwellings / units proposed."
+          },
+          "numStoreysProposed": {
+            "type": "integer",
+            "description": "This is to track the number of storeys proposed."
+          },
+          "numPreExistingDwellings": {
+            "type": "integer",
+            "description": "This is to track the number of pre-existing dwellings on site."
+          },
+          "numDwellingsDemolished": {
+            "type": "integer",
+            "description": "This is to track the number of dwellings to be demolished."
+          },
+          "numExistingFloorArea": {
+            "type": "integer",
+            "description": "This is to track the existing floor area (sqm)."
+          },
+          "numExistingSiteArea": {
+            "type": "integer",
+            "description": "This is to track the existing site area (sqm)."
+          },
+          "isNaturalDisaster": {
+            "type": "boolean",
+            "description": "This is to track if this application is direct result of a matter declared by the government to be an emergency and/or a natural disaster (for example, an application for re-building a home destroyed by bushfire)."
+          },
+          "costOfDevelopment": {
+            "type": "number",
+            "description": "This is to track the estimated cost of development."
+          },
+          "havemoreBASIX": {
+            "type": "boolean",
+            "description": "This is to track if applicant have one or more BASIX certificates."
+          },
+          "basixCertificateNumbers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BasixCertificateList"
+            }
+          },
+          "numExistingLots": {
+            "type": "integer",
+            "description": "This is to track the number of existing lots."
+          },
+          "numProposedAdditionalJobs": {
+            "type": "integer",
+            "description": "This is to track the number of additional jobs that are proposed to be generated through the operation of the development."
+          },
+          "isSubdivisionProposed": {
+            "type": "boolean",
+            "description": "This is to track if subdivision(s) is/are proposed."
+          },
+          "subdivisionTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubdivisionType"
+            }
+          },
+          "numProposedLots": {
+            "type": "integer",
+            "description": "This is to track the number of proposed lots."
+          },
+          "numStaff": {
+            "type": "integer",
+            "description": "This is to track the number of proposed staff/employees."
+          },
+          "numParkingSpaces": {
+            "type": "integer",
+            "description": "This is to track the number of parking spaces."
+          },
+          "numLoadingBays": {
+            "type": "integer",
+            "description": "This is to track the number of loading bays."
+          },
+          "isNewRoadProposed": {
+            "type": "boolean",
+            "description": "This is to track if new road is proposed."
+          },
+          "proposedRoadWorkDescription": {
+            "type": "string",
+            "maxLength": 1500
+          },
+          "isStagedDevelopment": {
+            "type": "boolean"
+          },
+          "stagedDevelopmentDescription": {
+            "type": "string",
+            "description": "This is to track the description for the proposed concept application and/or the staging of the development. Applicable if 'isConceptDevelopment' is true.",
+            "maxLength": 1500
+          },
+          "isCrownDevelopment": {
+            "type": "boolean",
+            "description": "This is to track if this is a proposed crown development."
+          },
+          "crownDevelopmentNSWAgency": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "isIntegratedDevelopment": {
+            "type": "boolean"
+          },
+          "integratedDevelopmentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegratedDevelopmentType"
+            }
+          },
+          "designatedDevelopment": {
+            "type": "boolean"
+          },
+          "doesImpactHabitat": {
+            "type": "boolean"
+          },
+          "doesVaryLEP": {
+            "type": "boolean",
+            "description": "This is to track if the application proposes a variation to a development standard in an environmental planning instrument (eg LEP or SEPP)."
+          },
+          "LEPVariation": {
+            "$ref": "#/components/schemas/LEPVariation"
+          },
+          "isApplicationVPA": {
+            "type": "boolean",
+            "description": "This is to track if the application accompanied by a Voluntary Planning Agreement (VPA)."
+          },
+          "vpaDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VPADetail"
+            }
+          },
+          "isLGAS68ApprovalReq": {
+            "type": "boolean",
+            "description": "This is to track if approval under S68 of the Local Government Act 1993 is required."
+          },
+          "isTreeWorksReq": {
+            "type": "boolean",
+            "description": "This is to track if tree removal and/or pruning work is proposed."
+          },
+          "treeRemovalDescription": {
+            "type": "string",
+            "description": "This is to track the descripton for treeremoval. Visible only when IsTreeWorksReq is selected as true."
+          },
+          "areaImpacted": {
+            "type": "number",
+            "description": "This is to track the area which has got impacted. Visible only when IsTreeWorksReq is selected as true."
+          },
+          "impactedLandUnits": {
+            "type": "string",
+            "description": "This is to track the impacted land units if tree works are involved. Visible only when IsTreeWorksReq is slected as true.",
+            "example": "Refer to description for values."
+          },
+          "treesImpacted": {
+            "type": "number",
+            "description": "This is to track the number of trees impacted.Visible only when IsTreeWorksReq is selected as true."
+          },
+          "areaUnit": {
+            "type": "string",
+            "description": "This is to track the units of area.Visible only when IsTreeWorksReq is selected as true."
+          },
+          "areaOfCanopy": {
+            "type": "number",
+            "description": "This is to track the area of canopy.Visible only when IsTreeWorksReq is selected as true."
+          },
+          "isS68Applied": {
+            "type": "boolean",
+            "description": "This is to track if applicant applied for approval under S68 of the Local Government Act. Visible only when isS68LGActApprovalReq is  selected as yes. If IsS68Applied selected as No then approval must be applied under s68 of the Local Government Act with the council."
+          },
+          "applyForApprovalUnderS68": {
+            "type": "boolean",
+            "description": "This is to track if approval is sought under S68 of the Local Government Act. Visible only when isS68Applied is selected as no. Upon application submission online, system will automatically create a draft Section 68 of the Local Government Act application form and submit to council."
+          },
+          "hasOnlines68Case": {
+            "type": "boolean",
+            "description": "This is to track if application for S68 is applied via NSW planning Portal or not. Visible only when isS68Applied is selected as yes."
+          },
+          "s68RefNumber": {
+            "type": "string",
+            "description": "This is to track the portal reference number. It is visible only when HasOnlines68Case is selected as yes."
+          },
+          "s68RelatedRefNo": {
+            "type": "string",
+            "description": "Used to select s68 reference number related to this application. Visible only when HasOnlines68Case is selected as no."
+          },
+          "applicationType10.7": {
+            "type": "boolean",
+            "description": "This is to track whether a 10.7 certificate is already obtained or not. If applicationType is selcted as no, then certificate can be applied with the council."
+          },
+          "hasOnlineCase": {
+            "type": "boolean",
+            "description": "This is to track whether 10.7 certificate is applied via NSW planning portal or not. Visible only if ApplicationType is selected as yes."
+          },
+          "PANNumber": {
+            "type": "string",
+            "description": "This is to track the portal reference number. Visible only when HasOnlineCase is selected as yes."
+          },
+          "approvalReferenceNumber": {
+            "type": "string",
+            "description": "This is to track the 10.7 certificate number related to this application. Visible only when HasOnlineCase is selected as no."
+          },
+          "startPlanningCertificateApplication": {
+            "type": "boolean",
+            "description": "This is to track if a section 10.7 planning certificate is being sought or not. Visible only when ApplicationType is selected as no."
+          },
+          "doesIncludeHeritageArea": {
+            "type": "boolean",
+            "description": "This is to track if the development site included as an item of environmental heritage or sits within a heritage conservation area."
+          },
+          "doesIncludeHeritageBuilding": {
+            "type": "boolean",
+            "description": "This is to track if the work proposed includes any heritage listed buildings."
+          },
+          "doesIncludeHeritageTreeRemoval": {
+            "type": "boolean",
+            "description": "This is to track if heritage tree removal proposed."
+          },
+          "isApplicantCouncilMember": {
+            "type": "boolean",
+            "description": "This is to track if the applicant or owner is a staff member of the organisation assessing the application."
+          },
+          "applicantCouncilRoleDescription": {
+            "type": "string",
+            "description": "This is to track the description provided(name of person, role in council).",
+            "maxLength": 1500
+          },
+          "isApplicantRelatedToCouncil": {
+            "type": "boolean",
+            "description": "This is to track if the applicant or owner have a relationship with any staff of the organisation assessing the application."
+          },
+          "applicantCouncilRelationDescription": {
+            "type": "string",
+            "description": "This is to track the description provided(name of person, role in council, relationship to the person).",
+            "maxLength": 1500
+          },
+          "anyPoliticalDonation": {
+            "type": "boolean",
+            "description": "This is to track if the applicant is aware of any person who has financial interest in the application who has made a political donation or gift in the last two years."
+          },
+          "politicalDonation": {
+            "type": "object",
+            "properties": {
+              "donationDeclarationPersonName": {
+                "type": "string",
+                "description": "This is to track the name of person/s making the declaration.",
+                "maxLength": 100
+              },
+              "entityNameDonatedTo": {
+                "type": "string",
+                "description": "This is to track the name of entity (if donation / gift not by an individual).",
+                "maxLength": 100
+              },
+              "ABNDonatedTo": {
+                "type": "string",
+                "description": "This is to track the ABN (if donation / gift not by an individual).",
+                "maxLength": 20
+              },
+              "addressDonatedTo": {
+                "type": "string",
+                "description": "This is to track the residential address of person or registered / official address of entity.",
+                "maxLength": 250
+              },
+              "donationDetails": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Donation"
+                }
+              },
+              "politicalDonationsDeclaration": {
+                "type": "boolean",
+                "description": "This is to track the political donations declarations."
+              }
+            }
+          },
+          "payerInformation": {
+            "type": "object",
+            "required": [
+              "payerType",
+              "billingAddress"
+            ],
+            "properties": {
+              "payerType": {
+                "type": "string",
+                "description": "This is to track if the payer is an individual or a company. One of the below mentioned values must be selected for payer type. 1. individual 2. company",
+                "example": "Refer to description for values."
+              },
+              "billingAddress": {
+                "type": "string",
+                "description": "This is to track the billing address of the payer.",
+                "maxLength": 250
+              },
+              "payerPerson": {
+                "$ref": "#/components/schemas/Person"
+              },
+              "payerCompany": {
+                "$ref": "#/components/schemas/payerCompany"
+              }
+            }
+          },
+          "isResend": {
+            "type": "boolean",
+            "description": "This is to track if application details are resent. True indicates a retriggered event."
+          },
+          "documents": {
+            "description": "This block will be sending the full set of documents.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DownloadableDocument"
+            }
+          },
+          "declarations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          }
+        }
+      },
+      "UpdateDA": {
+        "type": "object",
+        "required": [
+          "caseStatus",
+          "applicant",
+          "developmentSiteOwner",
+          "ownerDetails",
+          "siteAddresses",
+          "developmentTypes",
+          "updatedBy"
+        ],
+        "properties": {
+          "caseStatus": {
+            "type": "string",
+            "description": "Status of the DA case",
+            "maxLength": 80,
+            "example": "Pending Lodgement"
+          },
+          "applicant": {
+            "$ref": "#/components/schemas/Applicant"
+          },
+          "developmentSiteOwner": {
+            "type": "string",
+            "description": "This is to track the development site owner type. One of the below mentioned values must be selected for development site owner type. 1. APPLICANT_OWNED 2. MULTI_PLUS_APPLICANT 3. MULTI_EXCL_APPLICANT 4. COMPANY_OWNED",
+            "example": "Refer to description for values."
+          },
+          "securityConditions": {
+            "type": "boolean",
+            "description": "This is to track whether there are any security or site conditions which may have impact on the person undertaking the inspection."
+          },
+          "detailsOfSecurityConditions": {
+            "type": "string",
+            "description": "This is to track the details of security conditions. Visible only if securityConditions is true."
+          },
+          "developerDetails": {
+            "$ref": "#/components/schemas/developerDetails"
+          },
+          "ownerDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Owner"
+            }
+          },
+          "ownersConsentDeclaration": {
+            "type": "boolean",
+            "description": "This is to track the declaration done by applicant."
+          },
+          "applicationType": {
+            "type": "string",
+            "description": "This is to track the type of the application. One of the below mentioned values must be selected for the type of the application. 1. DA 2. MODIFICATION 3. REVIEW",
+            "example": "Refer to description for values."
+          },
+          "councilDANumber": {
+            "type": "string",
+            "description": "This is to track the unique council DA number. Required if the application has been accepted for lodgement by the council.",
+            "maxLength": 20
+          },
+          "modificationType": {
+            "type": "string",
+            "description": "This is to track the type of modification. Required if the applicationType is \"Modification application\". One of the below mentioned values must be selected for modification type. 1. MOD_MINOR 2. MOD_ENV_IMPACT 3. MOD_LEC 4. MOD_OTHERS",
+            "example": "Refer to description for values."
+          },
+          "originalDADeterminationDate": {
+            "type": "string",
+            "description": "This is to track the date when the original DA was determined."
+          },
+          "existingDANumber": {
+            "type": "string",
+            "description": "This is to track the existing DA number upon which modification or review application is proposed. Required if the applicationType is MODIFICATION or REVIEW.",
+            "maxLength": 20
+          },
+          "existingDADeterminationDate": {
+            "type": "string",
+            "description": "This is to track the existing DA determination date upon which review application is proposed. Required if the applicationType is Review. UI field is \"Date of determination\"."
+          },
+          "proposedModificationDescription": {
+            "type": "string",
+            "description": "This is to track the existing DA determination date upon which modification application is proposed.Required if the applicationType is MODIFICATION.",
+            "maxLength": 1500
+          },
+          "isExistingOnlineDA": {
+            "type": "boolean",
+            "description": "This is to track if the existing DA applied was via the NSW Planning Portal."
+          },
+          "existingOnlinePANNumber": {
+            "type": "string",
+            "description": "This is to track the portal application number (PAN)."
+          },
+          "siteAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            }
+          },
+          "developmentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DevelopmentType"
+            }
+          },
+          "relevantEPI": {
+            "type": "array",
+            "description": "This is to track the relevant environmental planning instrument. eg. LEP, SEPP",
+            "items": {
+              "$ref": "#/components/schemas/RelevantEPIList"
+            }
+          },
+          "isPoolSpa40KlitersProposed": {
+            "type": "boolean",
+            "description": "This is to track if the pool is more than 40K in capacity. This will be applicable when 'Pools / decks / fencing' is a part of 'developmentTypes'."
+          },
+          "developmentDescription": {
+            "type": "string",
+            "maxLength": 1500
+          },
+          "proposed24HrWork": {
+            "$ref": "#/components/schemas/ScheduleWorkDay"
+          },
+          "numDwellingsUnitsProposed": {
+            "type": "integer",
+            "description": "This is to track the number of dwellings / units proposed."
+          },
+          "numStoreysProposed": {
+            "type": "integer",
+            "description": "This is to track the number of storeys proposed."
+          },
+          "numPreExistingDwellings": {
+            "type": "integer",
+            "description": "This is to track the number of pre-existing dwellings on site."
+          },
+          "numDwellingsDemolished": {
+            "type": "integer",
+            "description": "This is to track the number of dwellings to be demolished."
+          },
+          "numExistingFloorArea": {
+            "type": "integer",
+            "description": "This is to track the existing floor area (sqm)."
+          },
+          "numExistingSiteArea": {
+            "type": "integer",
+            "description": "This is to track the existing site area (sqm)."
+          },
+          "isNaturalDisaster": {
+            "type": "boolean",
+            "description": "This is to track if this application is direct result of a matter declared by the government to be an emergency and/or a natural disaster (for example, an application for re-building a home destroyed by bushfire)."
+          },
+          "costOfDevelopment": {
+            "type": "number",
+            "description": "This is to track the estimated cost of development."
+          },
+          "havemoreBASIX": {
+            "type": "boolean",
+            "description": "This is to track if applicant have one or more BASIX certificates."
+          },
+          "basixCertificateNumbers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BasixCertificateList"
+            }
+          },
+          "numExistingLots": {
+            "type": "integer",
+            "description": "This is to track the number of existing lots."
+          },
+          "numProposedAdditionalJobs": {
+            "type": "integer",
+            "description": "This is to track the number of additional jobs that are proposed to be generated through the operation of the development."
+          },
+          "isSubdivisionProposed": {
+            "type": "boolean",
+            "description": "This is to track if subdivision(s) is/are proposed."
+          },
+          "subdivisionTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubdivisionType"
+            }
+          },
+          "numProposedLots": {
+            "type": "integer",
+            "description": "This is to track the number of proposed lots."
+          },
+          "numStaff": {
+            "type": "integer",
+            "description": "This is to track the number of proposed staff/employees."
+          },
+          "numParkingSpaces": {
+            "type": "integer",
+            "description": "This is to track the number of parking spaces."
+          },
+          "numLoadingBays": {
+            "type": "integer",
+            "description": "This is to track the number of loading bays."
+          },
+          "isNewRoadProposed": {
+            "type": "boolean",
+            "description": "This is to track if new road is proposed."
+          },
+          "proposedRoadWorkDescription": {
+            "type": "string",
+            "maxLength": 1500
+          },
+          "isStagedDevelopment": {
+            "type": "boolean"
+          },
+          "stagedDevelopmentDescription": {
+            "type": "string",
+            "description": "This is to track the description for the proposed concept application and/or the staging of the development. Applicable if 'isConceptDevelopment' is true.",
+            "maxLength": 1500
+          },
+          "isCrownDevelopment": {
+            "type": "boolean",
+            "description": "This is to track if this is a proposed crown development."
+          },
+          "crownDevelopmentNSWAgency": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "isIntegratedDevelopment": {
+            "type": "boolean"
+          },
+          "integratedDevelopmentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegratedDevelopmentType"
+            }
+          },
+          "designatedDevelopment": {
+            "type": "boolean"
+          },
+          "doesImpactHabitat": {
+            "type": "boolean"
+          },
+          "doesVaryLEP": {
+            "type": "boolean",
+            "description": "This is to track if the application proposes a variation to a development standard in an environmental planning instrument (eg LEP or SEPP)."
+          },
+          "LEPVariation": {
+            "$ref": "#/components/schemas/LEPVariation"
+          },
+          "isApplicationVPA": {
+            "type": "boolean",
+            "description": "This is to track if the application accompanied by a Voluntary Planning Agreement (VPA)."
+          },
+          "vpaDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VPADetail"
+            }
+          },
+          "isLGAS68ApprovalReq": {
+            "type": "boolean",
+            "description": "This is to track if approval under S68 of the Local Government Act 1993 is required."
+          },
+          "isTreeWorksReq": {
+            "type": "boolean",
+            "description": "This is to track if tree removal and/or pruning work is proposed."
+          },
+          "treeRemovalDescription": {
+            "type": "string",
+            "description": "This is to track the descripton for treeremoval. Visible only when IsTreeWorksReq is selected as true."
+          },
+          "areaImpacted": {
+            "type": "number",
+            "description": "This is to track the area which has got impacted. Visible only when IsTreeWorksReq is selected as true."
+          },
+          "impactedLandUnits": {
+            "type": "string",
+            "description": "This is to track the impacted land units if tree works are involved. Visible only when IsTreeWorksReq is slected as true.",
+            "example": "Refer to description for values."
+          },
+          "treesImpacted": {
+            "type": "number",
+            "description": "This is to track the number of trees impacted.Visible only when IsTreeWorksReq is selected as true."
+          },
+          "areaUnit": {
+            "type": "string",
+            "description": "This is to track the units of area.Visible only when IsTreeWorksReq is selected as true."
+          },
+          "areaOfCanopy": {
+            "type": "number",
+            "description": "This is to track the area of canopy.Visible only when IsTreeWorksReq is selected as true."
+          },
+          "isS68Applied": {
+            "type": "boolean",
+            "description": "This is to track if applicant applied for approval under S68 of the Local Government Act. Visible only when isS68LGActApprovalReq is  selected as yes. If IsS68Applied selected as No then approval must be applied under s68 of the Local Government Act with the council."
+          },
+          "applyForApprovalUnderS68": {
+            "type": "boolean",
+            "description": "This is to track if approval is sought under S68 of the Local Government Act. Visible only when isS68Applied is selected as no. Upon application submission online, system will automatically create a draft Section 68 of the Local Government Act application form and submit to council."
+          },
+          "hasOnlines68Case": {
+            "type": "boolean",
+            "description": "This is to track if application for S68 is applied via NSW planning Portal or not. Visible only when isS68Applied is selected as yes."
+          },
+          "s68RefNumber": {
+            "type": "string",
+            "description": "This is to track the portal reference number. It is visible only when HasOnlines68Case is selected as yes."
+          },
+          "s68RelatedRefNo": {
+            "type": "string",
+            "description": "Used to select s68 reference number related to this application. Visible only when HasOnlines68Case is selected as no."
+          },
+          "applicationType10.7": {
+            "type": "boolean",
+            "description": "This is to track whether a 10.7 certificate is already obtained or not. If applicationType is selcted as no, then certificate can be applied with the council."
+          },
+          "hasOnlineCase": {
+            "type": "boolean",
+            "description": "This is to track whether 10.7 certificate is applied via NSW planning portal or not. Visible only if ApplicationType is selected as yes."
+          },
+          "PANNumber": {
+            "type": "string",
+            "description": "This is to track the portal reference number. Visible only when HasOnlineCase is selected as yes."
+          },
+          "approvalReferenceNumber": {
+            "type": "string",
+            "description": "This is to track the 10.7 certificate number related to this application. Visible only when HasOnlineCase is selected as no."
+          },
+          "startPlanningCertificateApplication": {
+            "type": "boolean",
+            "description": "This is to track if a section 10.7 planning certificate is being sought or not. Visible only when ApplicationType is selected as no."
+          },
+          "doesIncludeHeritageArea": {
+            "type": "boolean",
+            "description": "This is to track if the development site included as an item of environmental heritage or sits within a heritage conservation area."
+          },
+          "doesIncludeHeritageBuilding": {
+            "type": "boolean",
+            "description": "This is to track if the work proposed includes any heritage listed buildings."
+          },
+          "doesIncludeHeritageTreeRemoval": {
+            "type": "boolean",
+            "description": "This is to track if heritage tree removal proposed."
+          },
+          "isApplicantCouncilMember": {
+            "type": "boolean",
+            "description": "This is to track if the applicant or owner is a staff member of the organisation assessing the application."
+          },
+          "applicantCouncilRoleDescription": {
+            "type": "string",
+            "description": "This is to track the description provided(name of person, role in council).",
+            "maxLength": 1500
+          },
+          "isApplicantRelatedToCouncil": {
+            "type": "boolean",
+            "description": "This is to track if the applicant or owner have a relationship with any staff of the organisation assessing the application."
+          },
+          "applicantCouncilRelationDescription": {
+            "type": "string",
+            "description": "This is to track the description provided(name of person, role in council, relationship to the person).",
+            "maxLength": 1500
+          },
+          "anyPoliticalDonation": {
+            "type": "boolean",
+            "description": "This is to track if the applicant is aware of any person who has financial interest in the application who has made a political donation or gift in the last two years."
+          },
+          "politicalDonation": {
+            "type": "object",
+            "properties": {
+              "donationDeclarationPersonName": {
+                "type": "string",
+                "description": "This is to track the name of person/s making the declaration.",
+                "maxLength": 100
+              },
+              "entityNameDonatedTo": {
+                "type": "string",
+                "description": "This is to track the name of entity (if donation / gift not by an individual).",
+                "maxLength": 100
+              },
+              "ABNDonatedTo": {
+                "type": "string",
+                "description": "This is to track the ABN (if donation / gift not by an individual).",
+                "maxLength": 20
+              },
+              "addressDonatedTo": {
+                "type": "string",
+                "description": "This is to track the residential address of person or registered / official address of entity.",
+                "maxLength": 250
+              },
+              "donationDetails": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Donation"
+                }
+              },
+              "politicalDonationsDeclaration": {
+                "type": "boolean",
+                "description": "This is to track the political donations declarations."
+              }
+            }
+          },
+          "payerInformation": {
+            "type": "object",
+            "required": [
+              "payerType",
+              "billingAddress"
+            ],
+            "properties": {
+              "payerType": {
+                "type": "string",
+                "description": "This is to track if the payer is an individual or a company. One of the below mentioned values must be selected for payer type. 1. individual 2. company",
+                "example": "Refer to description for values."
+              },
+              "billingAddress": {
+                "type": "string",
+                "description": "This is to track the billing address of the payer.",
+                "maxLength": 250
+              },
+              "payerPerson": {
+                "$ref": "#/components/schemas/Person"
+              },
+              "payerCompany": {
+                "$ref": "#/components/schemas/payerCompany"
+              }
+            }
+          },
+          "documents": {
+            "description": "This block will be sending the full set of documents.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DownloadableDocument"
+            }
+          },
+          "deltaDocuments": {
+            "description": "This block will be sending the delta documents uploaded or updated as part of update operation.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DownloadableDocument"
+            }
+          },
+          "declarations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          }
+        }
+      },
+      "BasixCertificateList": {
+        "type": "object",
+        "required": [
+          "basixCertificateNumber"
+        ],
+        "properties": {
+          "basixCertificateNumber": {
+            "type": "string",
+            "maxLength": 50
+          }
+        }
+      },
+      "SubdivisionType": {
+        "type": "object",
+        "required": [
+          "subdivisionType"
+        ],
+        "properties": {
+          "subdivisionType": {
+            "type": "string",
+            "description": "This is to track the subdivision type. Visible only if 'SubdivisionType' is selected as yes. One of the below mentioned values must be selected for subdivision type. 1. STRATA 2. COMMUNITY 3. TORRENS 4. STRATUM",
+            "example": "Refer to description for values."
+          }
+        }
+      },
+      "Donation": {
+        "type": "object",
+        "required": [
+          "donationType",
+          "personDonatedTo",
+          "donationDate",
+          "donationValue"
+        ],
+        "properties": {
+          "donationType": {
+            "type": "string",
+            "description": "This is to track the type of donation(political donations or gifts declaration).",
+            "maxLength": 50
+          },
+          "personDonatedTo": {
+            "type": "string",
+            "description": "This is to track the name of party or person for whose benefit the donation / gift was made.",
+            "maxLength": 100
+          },
+          "donationDate": {
+            "type": "string",
+            "description": "This is to track the date of benefit.",
+            "format": "date"
+          },
+          "donationValue": {
+            "type": "integer",
+            "description": "This is to track the donated value."
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "required": [
+          "address",
+          "lga"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "This is to track the address where the development is happening.",
+            "example": "19-33 Elizabeth Street, Narrandera, 2700",
+            "maxLength": 250
+          },
+          "addressDetail": {
+            "$ref": "#/components/schemas/AddressDetail"
+          },
+          "lotList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LotSectionPlan"
+            }
+          },
+          "lga": {
+            "type": "string",
+            "description": "Local Government Area under which this application falls",
+            "example": "PENRITH",
+            "maxLength": 30
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "description": "This is to track if the address is primary or not."
+          }
+        }
+      },
+      "LotSectionPlan": {
+        "type": "object",
+        "required": [
+          "lotsectionplan"
+        ],
+        "properties": {
+          "lotsectionplan": {
+            "type": "string",
+            "example": "1/-/SPXXXXX"
+          }
+        }
+      },
+      "AddressDetail": {
+        "type": "object",
+        "required": [
+          "streetName",
+          "suburb",
+          "latitude",
+          "longitude",
+          "state",
+          "postCode"
+        ],
+        "properties": {
+          "complexUnitType": {
+            "type": "string"
+          },
+          "complexLevelType": {
+            "type": "string"
+          },
+          "complexLevelNumber": {
+            "type": "string"
+          },
+          "complexUnitIdentifier": {
+            "type": "string"
+          },
+          "streetNumber1": {
+            "type": "string"
+          },
+          "streetNumber2": {
+            "type": "string"
+          },
+          "streetName": {
+            "type": "string"
+          },
+          "streetSuffix": {
+            "type": "string"
+          },
+          "streetType": {
+            "type": "string"
+          },
+          "suburb": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "wkid": {
+            "type": "string"
+          },
+          "cadastralID": {
+            "type": "string"
+          },
+          "primarySecondary": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postCode": {
+            "type": "number"
+          }
+        }
+      },
+      "OperationalConsent": {
+        "type": "object",
+        "required": [
+          "consentComments",
+          "updatedBy"
+        ],
+        "properties": {
+          "consentComments": {
+            "type": "string",
+            "description": "This is to track the request details captured as the Operational consent comments provided by the applicant.",
+            "example": "Complete",
+            "maxLength": 512
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DownloadableDocument"
+            }
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "familyName",
+          "email",
+          "contactNumber"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "otherName": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "familyName": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "contactNumber": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 10,
+            "pattern": "^[0-9]+$"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 250,
+            "format": "email"
+          }
+        }
+      },
+      "payerCompany": {
+        "type": "object",
+        "required": [
+          "companyName",
+          "email"
+        ],
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "description": "This is to track the company name. Required field when payer is selected as company.",
+            "maxLength": 20
+          },
+          "ABN": {
+            "type": "string",
+            "description": "This is to track the Australian Business Number (ABN) and it is an optional field when payer is selected as company. The Australian Business Number (ABN) is a unique 11 digit identifier issued to all entities registered in the Australian Business Register (ABR).",
+            "maxLength": 20
+          },
+          "ACN": {
+            "type": "string",
+            "description": "This is to track the Australian Company Number (ACN) and it is an optional field when payer is selected as company. The Australian Company Number (ACN) is a nine digit number.",
+            "maxLength": 20
+          },
+          "tradingName": {
+            "type": "string",
+            "description": "This is to track the trading name, it is an optional field when payer is selected as company.",
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "description": "This is to track the email address.",
+            "maxLength": 250,
+            "format": "email"
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "required": [
+          "companyName"
+        ],
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "maxLength": 250
+          },
+          "ABNorACN": {
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      },
+      "ApplicantCompany": {
+        "type": "object",
+        "required": [
+          "companyName"
+        ],
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "maxLength": 250
+          },
+          "ABNorACN": {
+            "type": "string",
+            "description": "This attribute is obsolete and has been replaced by 'ABN'&'ACN' attribute. However, this attribute will be continued to be received until the next major API release.",
+            "maxLength": 20
+          },
+          "ABN": {
+            "type": "string",
+            "description": "This is to track the ABN. It should be 11-digit number.",
+            "maxLength": 20
+          },
+          "ACN": {
+            "type": "string",
+            "description": "This is to track the ACN. It should be 9-digit number.",
+            "maxLength": 20
+          },
+          "tradingName": {
+            "type": "string",
+            "description": "This is to track the trading name.",
+            "maxLength": 250
+          }
+        }
+      },
+      "Applicant": {
+        "type": "object",
+        "required": [
+          "applicantPerson",
+          "address"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Salutation for the applicant. One of the below mentioned values must be selected for salutation for applicant. 1. Miss 2. Mr 3. Mrs 4. Ms",
+            "example": "Refer to description for values."
+          },
+          "applicantPerson": {
+            "$ref": "#/components/schemas/Person"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 250
+          },
+          "isApplyBehalfOfCompany": {
+            "type": "boolean",
+            "description": "Is applicant applying on behalf of a company"
+          },
+          "applyOnBehalfCompany": {
+            "$ref": "#/components/schemas/ApplicantCompany"
+          },
+          "nominatedCompanyApplicant": {
+            "type": "boolean",
+            "description": "This is to track the company which is nominated by the applicant for this application."
+          }
+        }
+      },
+      "Owner": {
+        "type": "object",
+        "description": "This is to track if the owner is a person or company.",
+        "properties": {
+          "isOwnerABuilder": {
+            "description": "Required if Ownership is selected as 'There are one or more owners of the development site and I am NOT one of them' OR 'There are multiple owners of the development site and I am one of them'",
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string",
+            "description": "Salutation for the Owner. One of the below mentioned values must be selected for salutation for Owner. 1. Miss 2. Mr 3. Mrs 4. Ms",
+            "example": "Refer to description for values."
+          },
+          "ownerPerson": {
+            "$ref": "#/components/schemas/Person"
+          },
+          "ownerCompany": {
+            "$ref": "#/components/schemas/Company"
+          },
+          "address": {
+            "type": "string",
+            "description": "Owner's Address",
+            "example": "19-33 Elizabeth Street, Narrandera, 2700",
+            "maxLength": 250
+          }
+        }
+      },
+      "DevelopmentOwnerCompanyDetails": {
+        "type": "object",
+        "description": "Test",
+        "properties": {
+          "legalName": {
+            "description": "This is to track the legal name of developer company.",
+            "type": "string",
+            "maxLength": 150
+          },
+          "ABN": {
+            "description": "This is to track the developer ABN. It should be 11-digit number.",
+            "type": "string"
+          },
+          "ACN": {
+            "description": "This is to track the developer ACN. It should be 9-digit number",
+            "type": "string"
+          },
+          "tradingName": {
+            "description": "This is to track developer trading name.",
+            "type": "string",
+            "maxLength": 256
+          }
+        }
+      },
+      "DeveloperAddress": {
+        "type": "object",
+        "properties": {
+          "fullAddress": {
+            "description": "This is to track developer address.",
+            "type": "string",
+            "maxLength": 250
+          },
+          "emailAddress": {
+            "description": "This is to track developer trading email. Required if developer details are entered/selected.",
+            "type": "string",
+            "maxLength": 250
+          }
+        }
+      },
+      "DevelopmentType": {
+        "type": "object",
+        "required": [
+          "developmentType"
+        ],
+        "properties": {
+          "developmentType": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "RelevantEPIList": {
+        "type": "object",
+        "description": "This is to track the relevant environmental planning instrument. eg. LEP, SEPP.",
+        "required": [
+          "relevantEPIValue"
+        ],
+        "properties": {
+          "relevantEPIValue": {
+            "type": "string",
+            "description": "This is to track the relevant environmental planning instrument(EPI) value."
+          },
+          "relevantSEPP": {
+            "type": "string",
+            "description": "This is to track the relevant SEPP. Applicable when State Environmental Planning Policy (SEPP) is selected."
+          },
+          "relevantLEP": {
+            "type": "string",
+            "description": "This is to track the relevant LEP. Applicable when Local Environmental Plan (LEP) is selected."
+          }
+        }
+      },
+      "IntegratedDevelopmentType": {
+        "type": "object",
+        "required": [
+          "integratedDevelopmentType"
+        ],
+        "properties": {
+          "integratedDevelopmentType": {
+            "type": "string",
+            "description": "This is to track the type of integrated development. One of the below mentioned values must be selected for type of integrated development. 1. Coal Mine Subsidence Compensation Act 2017 2. Fisheries Management Act 1994 3. Heritage Act 1977 4. Mining Act 1992 5. National Parks and Wildlife Act 1974 6. Petroleum (Onshore) Act 1991 7. Protection of the Environment Operations Act 1997 8. Roads Act 1993 9. Rural Fires Act 1997 10. Water Management Act 2000",
+            "example": "Refer to description for values."
+          }
+        }
+      },
+      "VPADetail": {
+        "type": "object",
+        "description": "This is to track the VPA details. It is applicable if 'isApplicationVPA' is true",
+        "required": [
+          "vpaStatus"
+        ],
+        "properties": {
+          "vpaDescription": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "vpaStatus": {
+            "type": "string",
+            "description": "This is to track the status of Voluntary Planning Agreement(VPA). One of the below mentioned values must be selected for Voluntary Planning Agreement(VPA) status 1. PROPOSED 2. ON_EXHIBITION 3. EXECUTED",
+            "example": "Refer to description for values."
+          }
+        }
+      },
+      "WorkDay": {
+        "type": "object",
+        "description": "This is to track the work days. Applicable when 'isMonWorkDay' or 'isTueWorkDay' or 'isWedWorkDay' or 'isThuWorkDay' or 'isFriWorkDay' or 'isSatWorkDay' or 'isSunWorkDay' is 'true'",
+        "properties": {
+          "proposed24HrWork": {
+            "type": "boolean",
+            "description": "Either 24 hour work of specify start and end hours"
+          },
+          "startWorkingHours": {
+            "type": "string",
+            "description": "Applicable when proposed24HrWork is 'false'",
+            "example": "09:30 AM",
+            "maxLength": 15
+          },
+          "endWorkingHours": {
+            "type": "string",
+            "description": "Applicable when proposed24HrWork is 'false'",
+            "example": "05:30 PM",
+            "maxLength": 15
+          }
+        }
+      },
+      "ScheduleWorkDay": {
+        "type": "object",
+        "description": "Proposed hours of operation. It will be applicable when developmentType has 'Home business' or 'Health services facilities' or 'Telecommunications and communication facilities' or 'Waste and resource management facilities' or 'Home based child care' or 'Out of school hours care' or 'School based child care' or 'Educational establishment' or 'Shop top housing' or 'Mixed use development' or 'Centre based childcare' or 'Place of public worship' or 'Industrial development' or 'Recreational uses' or 'Entertainment facility' or 'Food and drink premises' or 'Artisanal food and drink' or 'Data storage premises' or 'Other' in the selected list.",
+        "properties": {
+          "isMonWorkDay": {
+            "type": "boolean"
+          },
+          "MonWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          },
+          "isTueWorkDay": {
+            "type": "boolean"
+          },
+          "TueWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          },
+          "isWedWorkDay": {
+            "type": "boolean"
+          },
+          "WedWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          },
+          "isThuWorkDay": {
+            "type": "boolean"
+          },
+          "ThuWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          },
+          "isFriWorkDay": {
+            "type": "boolean"
+          },
+          "FriWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          },
+          "isSatWorkDay": {
+            "type": "boolean"
+          },
+          "SatWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          },
+          "isSunWorkDay": {
+            "type": "boolean"
+          },
+          "SunWorkDay": {
+            "$ref": "#/components/schemas/WorkDay"
+          }
+        }
+      },
+      "DownloadableDocument": {
+        "type": "object",
+        "required": [
+          "documentName",
+          "documentType",
+          "uploadedDateTime",
+          "documentURL"
+        ],
+        "properties": {
+          "documentName": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "documentType": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "uploadedDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "documentURL": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 500,
+            "description": "URL of the document to be downloaded"
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "Council"
+          }
+        }
+      },
+      "AdditionalInfo": {
+        "type": "object",
+        "required": [
+          "caseStatus",
+          "responseDate",
+          "updatedBy"
+        ],
+        "properties": {
+          "caseStatus": {
+            "type": "string",
+            "description": "This is to track the status of the request for additional information.",
+            "example": "Complete",
+            "maxLength": 100
+          },
+          "childCaseID": {
+            "type": "string",
+            "description": "This is to track the additional information child case ID for requested additional information."
+          },
+          "responseDate": {
+            "type": "string",
+            "description": "This is to track date and time of response on additional information requested.",
+            "format": "date"
+          },
+          "responseDetails": {
+            "type": "string",
+            "description": "This is to track additional information description provided by the applicant",
+            "maxLength": 1500
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DownloadableDocument"
+            }
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          }
+        }
+      },
+      "LEPVariation": {
+        "type": "object",
+        "properties": {
+          "relevantEPIAddress": {
+            "type": "array",
+            "description": "This is to track the zone of the land.",
+            "items": {
+              "$ref": "#/components/schemas/RelevantEPIAddress"
+            }
+          },
+          "zoneObjectives": {
+            "type": "string",
+            "description": "This is to track the objectives of the zone(s).",
+            "maxLength": 200
+          },
+          "developmentStandardVariations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DevelopmentStandardVariation"
+            }
+          },
+          "developmentDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DevelopmentDetails"
+            }
+          }
+        }
+      },
+      "RelevantEPIAddress": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Address under - What is the zone of the land?"
+          },
+          "landZone": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Zone under - What is the zone of the land?"
+          }
+        }
+      },
+      "DevelopmentStandardVariation": {
+        "type": "object",
+        "properties": {
+          "objectives": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "circumstances": {
+            "type": "string",
+            "description": "This is to track how the compliance with the development standard(s) is unreasonable or unnecessary in the circumstances of this particular case.",
+            "maxLength": 500
+          },
+          "justification": {
+            "type": "string",
+            "description": "This is to track if there are sufficient environmental planning grounds to justify variation of the development standard(s).",
+            "maxLength": 500
+          },
+          "otherInformation": {
+            "type": "string",
+            "description": "This is to track if any other relevant information to be considered to justify variation of the development standard(s).",
+            "maxLength": 500
+          }
+        }
+      },
+      "DevelopmentDetails": {
+        "type": "object",
+        "properties": {
+          "developmentStandardVaried": {
+            "type": "string",
+            "description": "This is to track the name of the development standard being varied. One of the below mentioned values must be selected for development standard varied. 1. Floor space ratio 2. Height 3. Lot Size 4. Other",
+            "example": "Refer to description for values."
+          },
+          "clauseNumber": {
+            "type": "string",
+            "description": "This is to track the clause number."
+          },
+          "devStandardNumberVaried": {
+            "type": "string",
+            "description": "This is to track the numeric value of the standard being varied."
+          },
+          "devStdPercentagePropVariation": {
+            "type": "number",
+            "description": "This is to track the percentage value of the standard being varied."
+          },
+          "devNumberAgainstStandard": {
+            "type": "string",
+            "description": "This is to track the numeric value of the development against this standard."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "statusCode",
+          "errorCode"
+        ],
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "example": 404
+          },
+          "message": {
+            "type": "string",
+            "example": "Internal Server error 19876"
+          },
+          "activityId": {
+            "type": "string",
+            "example": "00000011-0ab-xy00-0000-500000000000"
+          },
+          "errorCode": {
+            "type": "string",
+            "example": "DPE_TMS01"
+          },
+          "errorDetails": {
+            "type": "string",
+            "example": "Inner Exceptions, Stack Trace, etc"
+          }
+        }
+      },
+      "developerDetails": {
+        "type": "object",
+        "description": "This is to track the developer details.",
+        "properties": {
+          "ABN": {
+            "type": "string",
+            "description": "This is to track the Australian Business Number (ABN), which is an unique 11 digit identifier issued to all entities registered in the Australian Business Register (ABR). It should be 11-digit number."
+          },
+          "ACN": {
+            "type": "string",
+            "description": "This is to track the Australian Company Number (ACN), which is a nine digit number. It should be 11-digit number."
+          },
+          "companyName": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "This is to track the company name."
+          },
+          "tradingName": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "This is to track the trader's full name"
+          },
+          "address": {
+            "type": "string",
+            "description": "This is to track the developer address."
+          },
+          "emailAddress": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "This is to track the email address which must be registered in the planning portal.",
+            "example": "john.smith@gmail.com"
+          }
+        }
+      },
+      "UpdatedBy": {
+        "title": "UpdatedBy",
+        "type": "object",
+        "properties": {
+          "person": {
+            "$ref": "#/components/schemas/PersonBody"
+          }
+        }
+      },
+      "PersonBody": {
+        "title": "PersonBody",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "example": "John",
+            "type": "string",
+            "maxLength": 20
+          },
+          "familyName": {
+            "example": "Smith",
+            "type": "string",
+            "maxLength": 20
+          },
+          "email": {
+            "description": "This is to track the emaill address which must be registered in the planning portal",
+            "example": "john.smith@gmail.com",
+            "type": "string",
+            "maxLength": 250
+          },
+          "contactNumber": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 10,
+            "pattern": "^[0-9]+$"
+          }
+        },
+        "required": [
+          "firstName",
+          "familyName",
+          "email"
+        ]
+      },
+      "reassign": {
+        "title": "reassign",
+        "type": "object",
+        "properties": {
+          "assignee": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          }
+        },
+        "required": [
+          "assignee"
+        ]
+      }
+    }
+  }
+}
